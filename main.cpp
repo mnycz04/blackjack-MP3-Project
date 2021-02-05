@@ -13,3 +13,9 @@ Written By:
 #include <vector>
 
 using namespace std;
+
+int main() {
+    // TODO: Main function loop
+
+    return 0;
+}
