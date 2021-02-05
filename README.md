@@ -1,3 +1,3 @@
-"# Blackjack C++" 
+# Blackjack C++"
 
 ## Witten by Michael Nycz, Colin Graham, & Colin Fallat
