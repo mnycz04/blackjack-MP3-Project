@@ -14,6 +14,19 @@ Written By:
 
 using namespace std;
 
+class Deck {
+    // vector<Card> deck;
+
+    /*Deck(void) {
+        // TODO fill in constructor class
+    }*/
+
+    /*Card draw_card(void) {
+        int card_index = rand() % deck.size();
+        return deck[card_index];
+    }*/
+};
+
 int main() {
     // TODO: Main function loop
 
