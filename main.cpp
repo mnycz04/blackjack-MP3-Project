@@ -188,6 +188,14 @@ class Card {
                 card_name = "Ace of spades";
                 break;
         }
+
+        if ((card_id / 4) + 2 <= 10) {
+            value = (card_id / 4) + 2;
+        } else if (card_id <= 47) {
+            value = 10;
+        } else {
+            value = 11;
+        }
     }
 };
 
