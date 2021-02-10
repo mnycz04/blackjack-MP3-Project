@@ -220,6 +220,6 @@ class Deck {
 
 int main() {
     // TODO: Main function loop
-    Deck play;
+
     return 0;
 }
