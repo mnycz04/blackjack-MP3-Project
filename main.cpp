@@ -219,6 +219,31 @@ class Deck {
     }
 };
 
+class Player {
+    int points = 0;
+    vector<Card> playercards;
+
+   public:
+    int get_points(void) { return points; }
+
+    vector<Card> get_cards() { return playercards; }
+
+    void add_card(Card card) {
+        playercards.push_back(card);
+        points += card.get_card_value();
+    }
+    bool convert_ace() {
+        for (Card player_card : playercards) {
+            if (player_card.get_card_id() >= 48) {
+                points -= 10;
+                player_card.set_card_id(-1);
+                return (true);
+            }
+        }
+        return (false);
+    }
+};
+
 int main() {
     // TODO: Main function loop
 
