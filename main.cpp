@@ -10,6 +10,7 @@ Written By:
 #include <stdlib.h>
 
 #include <ctime>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -196,6 +197,25 @@ class Card {
         } else {
             value = 11;
         }
+    }
+};
+
+class Deck {
+    vector<Card> deck;
+
+   public:
+    Deck(void) {
+        for (int i{0}; i <= 51; i++) {
+            Card new_card(i);
+            deck.push_back(new_card);
+        }
+    }
+    Card draw_card(void) {
+        srand(time(NULL));
+        int card_index = rand() % (deck.size());
+        Card drew_card = deck[card_index];
+        deck.erase(deck.begin() + card_index);
+        return drew_card;
     }
 };
 
