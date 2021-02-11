@@ -208,13 +208,14 @@ class Deck {
         for (int i{0}; i <= 51; i++) {
             Card new_card(i);
             deck.push_back(new_card);
-            cout << new_card.get_card_name() << endl;
         }
     }
-
     Card draw_card(void) {
-        int card_index = rand() % deck.size();
-        return deck[card_index];
+        srand(time(NULL));
+        int card_index = rand() % (deck.size());
+        Card drew_card = deck[card_index];
+        deck.erase(deck.begin() + card_index);
+        return drew_card;
     }
 };
 
