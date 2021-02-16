@@ -331,7 +331,7 @@ int main() {
         }
     }
 
-    if (player.get_points() <= 21) {
+    if (player.get_points() <= 21 && dealer.get_points() <= 21) {
         if (player.get_points() > dealer.get_points()) {
             cout << "You've won!\n\n\n";
         } else if (player.get_points() < dealer.get_points()) {
