@@ -22,7 +22,7 @@ class Card {
     int value;
 
    public:
-    void set_card_id(int id) { card_id = id; }
+    void set_card_id(int new_id) { card_id = new_id; }
 
     int get_card_id() { return card_id; }
 
@@ -31,6 +31,7 @@ class Card {
     int get_card_value() { return value; }
 
     Card(int id) {
+        card_id = id;
         switch (id) {
             case (0):
                 card_name = "2 of clubs";
@@ -233,19 +234,20 @@ class Player {
         points += card.get_card_value();
     }
     bool convert_ace() {
-        for (Card player_card : playercards) {
-            if (player_card.get_card_id() >= 48) {
+        for (int i{0}; i < playercards.size(); i++) {
+            if (playercards[i].get_card_id() >= 48) {
                 points -= 10;
-                player_card.set_card_id(-1);
-                return (true);
+                playercards[i].set_card_id(-1);
+                cout << playercards[i].get_card_name()
+                     << " was converted to a 1";
+                return true;
             }
         }
-        return (false);
+        return false;
     }
 };
 
 int main() {
-    // TODO: Main function loop
     Deck playeddeck;
     Player player;
     Player dealer;
@@ -297,7 +299,7 @@ int main() {
                 Card drawn_card = playeddeck.draw_card();
                 player.add_card(drawn_card);
                 cout << "You drew a " << drawn_card.get_card_name()
-                     << " and now have " << player.get_points() << " points.";
+                     << " and now have " << player.get_points() << " points.\n";
                 break;
             }
 
@@ -329,12 +331,14 @@ int main() {
         }
     }
 
-    if (player.get_points() > dealer.get_points()) {
-        cout << "You've won!\n\n\n";
-    } else if (player.get_points() < dealer.get_points()) {
-        cout << "The dealer won.\n\n\n";
-    } else {
-        cout << "Push. Nobody wins.\n\n\n";
+    if (player.get_points() <= 21) {
+        if (player.get_points() > dealer.get_points()) {
+            cout << "You've won!\n\n\n";
+        } else if (player.get_points() < dealer.get_points()) {
+            cout << "The dealer won with " << dealer.get_points()
+                 << " points.\n\n\n";
+        } else {
+            cout << "Push. Nobody wins.\n\n\n";
+        }
     }
-    return 0;
 }
