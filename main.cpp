@@ -239,7 +239,7 @@ class Player {
                 points -= 10;
                 playercards[i].set_card_id(-1);
                 cout << playercards[i].get_card_name()
-                     << " was converted to a 1";
+                     << " was converted to a 1\n";
                 return true;
             }
         }
