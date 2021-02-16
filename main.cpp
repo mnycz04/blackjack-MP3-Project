@@ -305,8 +305,18 @@ int main() {
                 playerturn = false;
             }
         }
-        break;  // For testing only
+
+        if (player.get_points() > 21) {
+            bool had_ace = player.convert_ace();
+            if (had_ace) {
+                continue;
+            } else {
+                cout << "You busted!\n";
+                return;
+            }
+        }
     }
 
+    
     return 0;
 }
