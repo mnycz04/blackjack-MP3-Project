@@ -22,7 +22,7 @@ class Card {
     int value;
 
    public:
-    void set_card_id(int id) { card_id = id; }
+    void set_card_id(int new_id) { card_id = new_id; }
 
     int get_card_id() { return card_id; }
 
@@ -31,6 +31,7 @@ class Card {
     int get_card_value() { return value; }
 
     Card(int id) {
+        card_id = id;
         switch (id) {
             case (0):
                 card_name = "2 of clubs";
@@ -233,19 +234,113 @@ class Player {
         points += card.get_card_value();
     }
     bool convert_ace() {
-        for (Card player_card : playercards) {
-            if (player_card.get_card_id() >= 48) {
+        for (int i{0}; i < playercards.size(); i++) {
+            if (playercards[i].get_card_id() >= 48) {
                 points -= 10;
-                player_card.set_card_id(-1);
-                return (true);
+                playercards[i].set_card_id(-1);
+                cout << playercards[i].get_card_name()
+                     << " was converted to a 1\n";
+                return true;
             }
         }
-        return (false);
+        return false;
     }
 };
 
 int main() {
-    // TODO: Main function loop
+    Deck playeddeck;
+    Player player;
+    Player dealer;
+    bool playerturn{true};
 
+    for (int i{0}; i < 2; i++) {
+        player.add_card(playeddeck.draw_card());
+        dealer.add_card(playeddeck.draw_card());
+    }
+
+    if (player.get_points() > 21) {
+        player.convert_ace();
+    }
+    if (dealer.get_points() > 21) {
+        dealer.convert_ace();
+    }
+
+    while (playerturn) {
+        cout << "The dealer has the " << dealer.get_cards()[0].get_card_name()
+             << " showing." << endl
+             << endl;
+        cout << "You have " << player.get_points() << " points:" << endl;
+        for (Card this_card : player.get_cards()) {
+            cout << this_card.get_card_name() << endl;
+        }
+
+        cout << "Would you like to:\n[H] Hit\n[S] Stand\n";
+        char player_choice;
+        while (player_choice != 'H' || player_choice != 'S') {
+            try {
+                cin >> player_choice;
+                player_choice = toupper(player_choice);
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore();
+                    throw 1;
+                } else if (player_choice == 'H' || player_choice == 'S') {
+                    break;
+                } else {
+                    throw 1;
+                }
+            } catch (int e) {
+                cout << "Invalid choice\n";
+            }
+        }
+
+        switch (player_choice) {
+            case ('H'): {
+                Card drawn_card = playeddeck.draw_card();
+                player.add_card(drawn_card);
+                cout << "You drew a " << drawn_card.get_card_name()
+                     << " and now have " << player.get_points() << " points.\n";
+                break;
+            }
+
+            case ('S'): {
+                playerturn = false;
+            }
+        }
+
+        if (player.get_points() > 21) {
+            bool had_ace = player.convert_ace();
+            if (had_ace) {
+                continue;
+            } else {
+                cout << "You busted!\n";
+                break;
+            }
+        }
+    }
+
+    while ((dealer.get_points() < 17) && (player.get_points() <= 21)) {
+        Card drawn_card = playeddeck.draw_card();
+        dealer.add_card(drawn_card);
+
+        if (dealer.get_points() > 21) {
+            dealer.convert_ace();
+            if (dealer.get_points() > 21) {
+                cout << "The dealer busted! You win!\n\n\n";
+                return 0;
+            }
+        }
+    }
+
+    if (player.get_points() <= 21 && dealer.get_points() <= 21) {
+        if (player.get_points() > dealer.get_points()) {
+            cout << "You've won!\n\n\n";
+        } else if (player.get_points() < dealer.get_points()) {
+            cout << "The dealer won with " << dealer.get_points()
+                 << " points.\n\n\n";
+        } else {
+            cout << "Push. Nobody wins.\n\n\n";
+        }
+    }
     return 0;
 }
