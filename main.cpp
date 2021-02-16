@@ -246,6 +246,12 @@ class Player {
 
 int main() {
     // TODO: Main function loop
+    Deck playeddeck;
+    Player player;
+    Player dealer;
+
+    for (int i{0}; i < 2; i++) {
+    }
 
     return 0;
 }
