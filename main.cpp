@@ -327,6 +327,7 @@ int main() {
             dealer.convert_ace();
             if (dealer.get_points() > 21) {
                 cout << "The dealer busted! You win!\n\n\n";
+                return 0;
             }
         }
     }
@@ -341,4 +342,5 @@ int main() {
             cout << "Push. Nobody wins.\n\n\n";
         }
     }
+    return 0;
 }
