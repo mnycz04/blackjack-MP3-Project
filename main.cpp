@@ -202,16 +202,19 @@ class Card {
 };
 
 class Deck {
-    vector<Card> deck;
+    vector<Card>
+        deck;  // Vector that holds all the cards in the deck, as a Card object
 
    public:
-    Deck(void) {
+    Deck(void) {  // Constructor, when called will fill the vector "deck" with
+                  // cards
         for (int i{0}; i <= 51; i++) {
             Card new_card(i);
             deck.push_back(new_card);
         }
     }
-    Card draw_card(void) {
+    Card draw_card(void) {  // Method, returns a Card object, randomly selected
+                            // from the deck vector
         srand(time(NULL));
         int card_index = rand() % (deck.size());
         Card drew_card = deck[card_index];
@@ -222,7 +225,8 @@ class Deck {
 
 class Player {
     int points = 0;
-    vector<Card> playercards;
+    vector<Card> playercards;  // Vector, holds all the cards the player has, as
+                               // Card objects
 
    public:
     int get_points(void) { return points; }
@@ -233,8 +237,11 @@ class Player {
         playercards.push_back(card);
         points += card.get_card_value();
     }
-    bool convert_ace() {
+    bool convert_ace() {  // Method that detects if player has an ace
         for (int i{0}; i < playercards.size(); i++) {
+            // If the player has an ace, 10 points are subtracted, and the card
+            // ID of the ace is set to -1 to prevent it from being converted in
+            // the future
             if (playercards[i].get_card_id() >= 48) {
                 points -= 10;
                 playercards[i].set_card_id(-1);
@@ -242,7 +249,7 @@ class Player {
                      << " was converted to a 1\n";
                 return true;
             }
-        }
+        }  // If no ace is found, method returns false
         return false;
     }
 };
@@ -253,11 +260,13 @@ int main() {
     Player dealer;
     bool playerturn{true};
 
-    for (int i{0}; i < 2; i++) {
+    for (int i{0}; i < 2; i++) {  // The initial dealing of cards
         player.add_card(playeddeck.draw_card());
         dealer.add_card(playeddeck.draw_card());
     }
 
+    // In case the dealer or player start with 2 aces, one of them will be
+    // converted
     if (player.get_points() > 21) {
         player.convert_ace();
     }
@@ -270,24 +279,28 @@ int main() {
              << " showing." << endl
              << endl;
         cout << "You have " << player.get_points() << " points:" << endl;
-        for (Card this_card : player.get_cards()) {
+        for (Card this_card : player.get_cards()) {  // Prints the players cards
             cout << this_card.get_card_name() << endl;
         }
 
         cout << "Would you like to:\n[H] Hit\n[S] Stand\n";
-        char player_choice;
-        while (player_choice != 'H' || player_choice != 'S') {
+        char player_choice;  // Input of players choice
+
+        while (player_choice != 'H' ||
+               player_choice != 'S') {  // Loop to enforce a valid input
             try {
                 cin >> player_choice;
                 player_choice = toupper(player_choice);
                 if (cin.fail()) {
                     cin.clear();
                     cin.ignore();
-                    throw 1;
+                    throw 1;  // If a input is made that causes an exception in
+                              // std::cin, throw an exception to be caught
                 } else if (player_choice == 'H' || player_choice == 'S') {
                     break;
                 } else {
-                    throw 1;
+                    throw 1;  // A valid input was made that wasn't a valid
+                              // option. eg input was 'U'
                 }
             } catch (int e) {
                 cout << "Invalid choice\n";
@@ -308,17 +321,18 @@ int main() {
             }
         }
 
-        if (player.get_points() > 21) {
-            bool had_ace = player.convert_ace();
+        if (player.get_points() > 21) {           // Detects if player busted
+            bool had_ace = player.convert_ace();  // Tries to convert an ace
             if (had_ace) {
                 continue;
-            } else {
+            } else {  // If program fails to convert an ace, player loses
                 cout << "You busted!\n";
                 break;
             }
         }
     }
-
+    // Starts a loop to draw card for dealer until they bust, or have more than
+    // 17 points
     while ((dealer.get_points() < 17) && (player.get_points() <= 21)) {
         Card drawn_card = playeddeck.draw_card();
         dealer.add_card(drawn_card);
@@ -332,6 +346,8 @@ int main() {
         }
     }
 
+    // If no player has busted, then the dealer and players score are compared
+    // to see who won, or if the game ended in a push
     if (player.get_points() <= 21 && dealer.get_points() <= 21) {
         if (player.get_points() > dealer.get_points()) {
             cout << "You've won!\n\n\n";
