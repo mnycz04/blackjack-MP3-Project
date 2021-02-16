@@ -249,8 +249,63 @@ int main() {
     Deck playeddeck;
     Player player;
     Player dealer;
+    bool playerturn{true};
 
     for (int i{0}; i < 2; i++) {
+        player.add_card(playeddeck.draw_card());
+        dealer.add_card(playeddeck.draw_card());
+    }
+
+    if (player.get_points() > 21) {
+        player.convert_ace();
+    }
+    if (dealer.get_points() > 21) {
+        dealer.convert_ace();
+    }
+
+    while (playerturn) {
+        cout << "The dealer has the " << dealer.get_cards()[0].get_card_name()
+             << " showing." << endl
+             << endl;
+        cout << "You have " << player.get_points() << " points:" << endl;
+        for (Card this_card : player.get_cards()) {
+            cout << this_card.get_card_name() << endl;
+        }
+
+        cout << "Would you like to:\n[H] Hit\n[S] Stand\n";
+        char player_choice;
+        while (player_choice != 'H' || player_choice != 'S') {
+            try {
+                cin >> player_choice;
+                player_choice = toupper(player_choice);
+                if (cin.fail()) {
+                    cin.clear();
+                    cin.ignore();
+                    throw 1;
+                } else if (player_choice == 'H' || player_choice == 'S') {
+                    break;
+                } else {
+                    throw 1;
+                }
+            } catch (int e) {
+                cout << "Invalid choice\n";
+            }
+        }
+
+        switch (player_choice) {
+            case ('H'): {
+                Card drawn_card = playeddeck.draw_card();
+                player.add_card(drawn_card);
+                cout << "You drew a " << drawn_card.get_card_name()
+                     << " and now have " << player.get_points() << " points.";
+                break;
+            }
+
+            case ('S'): {
+                playerturn = false;
+            }
+        }
+        break;  // For testing only
     }
 
     return 0;
