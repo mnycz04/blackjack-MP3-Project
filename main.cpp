@@ -312,11 +312,29 @@ int main() {
                 continue;
             } else {
                 cout << "You busted!\n";
-                return;
+                break;
             }
         }
     }
 
-    
+    while ((dealer.get_points() < 17) && (player.get_points() <= 21)) {
+        Card drawn_card = playeddeck.draw_card();
+        dealer.add_card(drawn_card);
+
+        if (dealer.get_points() > 21) {
+            dealer.convert_ace();
+            if (dealer.get_points() > 21) {
+                cout << "The dealer busted! You win!\n\n\n";
+            }
+        }
+    }
+
+    if (player.get_points() > dealer.get_points()) {
+        cout << "You've won!\n\n\n";
+    } else if (player.get_points() < dealer.get_points()) {
+        cout << "The dealer won.\n\n\n";
+    } else {
+        cout << "Push. Nobody wins.\n\n\n";
+    }
     return 0;
 }
