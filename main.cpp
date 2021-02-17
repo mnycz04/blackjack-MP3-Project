@@ -347,7 +347,7 @@ int main() {
     }
 
     // If no player has busted, then the dealer and players score are compared
-    // to see who won, or if the game ended in a push
+    // to see who won, or if the game ended in a push (This is our algorithim)
     if (player.get_points() <= 21 && dealer.get_points() <= 21) {
         if (player.get_points() > dealer.get_points()) {
             cout << "You've won!\n\n\n";
